@@ -1,17 +1,22 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { Corinthia, Questrial } from 'next/font/google';
+
+// Importando as fontes com subset correto
+const corinthia = Corinthia({ subsets: ['latin'], weight: '400' });
+const questrial = Questrial({ subsets: ['latin'], weight: '400' });
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#f7f7f7] flex items-center justify-center px-6 py-20">
+    <div className={`min-h-screen bg-[#f7f7f7] flex items-center justify-center px-6 py-20 ${questrial.className}`}>
       <div className="w-full max-w-[700px] flex flex-col items-center text-center text-[#baaa9e]">
         {/* Save the date */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          className="uppercase text-lg tracking-widest font-['Questrial'] mb-2"
+          className="uppercase text-xl tracking-[0.2em]"
         >
           Save the date
         </motion.p>
@@ -21,7 +26,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2 }}
-          className="text-6xl sm:text-8xl font-['Corinthia'] leading-[1.2] mb-4"
+          className={`text-6xl sm:text-8xl leading-[1.2] mb-4 ${corinthia.className}`}
         >
           William & Ana
         </motion.h1>
@@ -31,7 +36,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.4 }}
-          className="text-xl sm:text-2xl tracking-[0.3em] font-['Questrial'] mb-6"
+          className="text-2xl sm:text-3xl tracking-[0.3em] mb-6"
         >
           25 . 10 . 2025
         </motion.p>
@@ -49,7 +54,7 @@ export default function Home() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.8 }}
-          className="text-md sm:text-lg font-['Questrial'] tracking-widest"
+          className="text-lg tracking-widest"
         >
           JACAREÍ - SP
         </motion.p>
