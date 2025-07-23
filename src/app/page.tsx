@@ -2,15 +2,14 @@
 
 import { motion } from 'framer-motion';
 import { Corinthia, Questrial } from 'next/font/google';
-import { useEffect, useState } from 'react';
 import Countdown from '../component/Countdown';
 import GuestConfirmationForm from '../component/FormularioConfirmacao';
 
 const corinthia = Corinthia({ subsets: ['latin'], weight: '400' });
 const questrial = Questrial({ subsets: ['latin'], weight: '400' });
-const targetDate = new Date('2025-10-25T00:00:00');
 
 export default function Home() {
+
   return (<>
     <div
       className={`min-h-screen w-full overflow-x-hidden bg-[#f7f7f7] flex flex-col items-center justify-center px-6 py-20 gap-10 ${questrial.className}`}
@@ -28,7 +27,7 @@ export default function Home() {
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
+          transition={{ duration: 3, delay: 0.1 }}
           className={`text-6xl sm:text-9xl leading-[1.2] mb-4 ${corinthia.className} font-bold`}
         >
           William & Ana
@@ -65,7 +64,10 @@ export default function Home() {
         whileHover={{ scale: 1.03 }}
         transition={{ type: 'spring', stiffness: 300 }}
         onClick={() => {
-          window.location.href = '#confirmar';
+          const el = document.getElementById('confirmar');
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth' });
+          }
         }}
         className="mt-6 px-8 py-4 rounded-full bg-white text-[#baaa9e] font-bold shadow-xl hover:bg-[#f1f1f1] active:scale-95 transition duration-200"
       >
@@ -85,12 +87,15 @@ export default function Home() {
 
       <Countdown />
     </div>
-    <div className='p-4 w-full bg-[#f7f7f7] flex flex-col items-center justify-center text-sm text-[#baaa9e] gap-2 py-12'>
-      <div className="max-w-3xl w-full text-center mb-8">
+    <div
+      id="confirmar"
+      className='p-4 w-full bg-[#f7f7f7] flex flex-col items-center justify-center text-sm text-[#baaa9e] gap-2 py-12'>
+      <div
+        className="max-w-3xl w-full text-center mb-8">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
+          transition={{ duration: 2, delay: 0.2 }}
           className={`text-6xl sm:text-8xl leading-[1.2] ${corinthia.className}`}
         >
           Confirme sua presença

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useForm } from 'react-hook-form';
@@ -32,7 +33,8 @@ export default function GuestConfirmationForm() {
     const criancas = Number(watch('criancas') || 0);
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="max-w-3xl w-full py-8 px-6 space-y-6 text-[#baaa9e] border border-[#baaa9e] rounded-xl shadow-lg text-base">
+        <form
+            onSubmit={handleSubmit(onSubmit)} className="max-w-3xl w-full py-8 px-6 space-y-6 text-[#baaa9e] border border-[#baaa9e] rounded-xl shadow-lg text-base">
             <div className="">
                 <label className="block font-semibold mb-1 text-base">Nome completo</label>
                 <input
@@ -97,7 +99,7 @@ export default function GuestConfirmationForm() {
                         {[...Array(adultos - 1)].map((_, i) => (
                             <input
                                 key={i}
-                                {...register(`nomesAdultos.${i}`)}
+                                {...register(`nomesAdultos.${i}` as any)}
                                 placeholder={`Nome do adulto ${i + 2}`}
                                 className="w-full p-3 rounded bg-white border"
                             />
@@ -128,7 +130,7 @@ export default function GuestConfirmationForm() {
                         {[...Array(criancas)].map((_, i) => (
                             <input
                                 key={i}
-                                {...register(`nomesCriancas.${i}`)}
+                                {...register(`nomesCriancas.${i}` as any)}
                                 placeholder={`Nome da criança ${i + 1}`}
                                 className="w-full p-3 rounded bg-white border"
                             />
