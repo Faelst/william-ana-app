@@ -2,16 +2,20 @@
 
 import { motion } from 'framer-motion';
 import { Corinthia, Questrial } from 'next/font/google';
+import { useEffect, useState } from 'react';
+import Countdown from '../component/Countdown';
+import GuestConfirmationForm from '../component/FormularioConfirmacao';
 
-// Importando as fontes com subset correto
 const corinthia = Corinthia({ subsets: ['latin'], weight: '400' });
 const questrial = Questrial({ subsets: ['latin'], weight: '400' });
+const targetDate = new Date('2025-10-25T00:00:00');
 
 export default function Home() {
-  return (
-    <div className={`min-h-screen bg-[#f7f7f7] flex items-center justify-center px-6 py-20 ${questrial.className}`}>
+  return (<>
+    <div
+      className={`min-h-screen w-full overflow-x-hidden bg-[#f7f7f7] flex flex-col items-center justify-center px-6 py-20 gap-10 ${questrial.className}`}
+    >
       <div className="w-full max-w-[700px] flex flex-col items-center text-center text-[#baaa9e]">
-        {/* Save the date */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -21,17 +25,15 @@ export default function Home() {
           Save the date
         </motion.p>
 
-        {/* Nomes dos noivos */}
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2 }}
-          className={`text-6xl sm:text-8xl leading-[1.2] mb-4 ${corinthia.className}`}
+          className={`text-6xl sm:text-9xl leading-[1.2] mb-4 ${corinthia.className} font-bold`}
         >
           William & Ana
         </motion.h1>
 
-        {/* Data */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -41,7 +43,6 @@ export default function Home() {
           25 . 10 . 2025
         </motion.p>
 
-        {/* Linha horizontal */}
         <motion.div
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
@@ -49,7 +50,6 @@ export default function Home() {
           className="w-40 h-[2px] bg-[#baaa9e] mb-4 origin-center"
         />
 
-        {/* Local */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -59,6 +59,55 @@ export default function Home() {
           JACAREÍ - SP
         </motion.p>
       </div>
+
+      <motion.button
+        whileTap={{ scale: 0.95 }}
+        whileHover={{ scale: 1.03 }}
+        transition={{ type: 'spring', stiffness: 300 }}
+        onClick={() => {
+          window.location.href = '#confirmar';
+        }}
+        className="mt-6 px-8 py-4 rounded-full bg-white text-[#baaa9e] font-bold shadow-xl hover:bg-[#f1f1f1] active:scale-95 transition duration-200"
+      >
+        Confirmar Minha Presença
+      </motion.button>
     </div>
+    <div className='w-full bg-[#baaa9e] flex flex-col items-center justify-center text-sm text-white gap-2 py-12'>
+      <motion.h1
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, delay: 0.2 }}
+        className={`text-6xl sm:text-8xl leading-[1.2] ${corinthia.className}`}
+      >
+        Contagem Regressiva
+      </motion.h1>
+
+
+      <Countdown />
+    </div>
+    <div className='p-4 w-full bg-[#f7f7f7] flex flex-col items-center justify-center text-sm text-[#baaa9e] gap-2 py-12'>
+      <div className="max-w-3xl w-full text-center mb-8">
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.2 }}
+          className={`text-6xl sm:text-8xl leading-[1.2] ${corinthia.className}`}
+        >
+          Confirme sua presença
+        </motion.h1>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.4 }}
+          className="text-sm font-light sm:text-base"
+        >
+          Por que pedimos seu telefone ou e-mail? <br />
+          Para que possamos enviar o convite digital e avisos importantes sobre a cerimônia e a festa. Sua confirmação só será válida com pelo menos um desses contatos.
+        </motion.p>
+      </div>
+
+      <GuestConfirmationForm />
+    </div>
+  </>
   );
 }
