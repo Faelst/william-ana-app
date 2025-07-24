@@ -34,27 +34,27 @@ export default function GuestConfirmationForm() {
 
     return (
         <form
-            onSubmit={handleSubmit(onSubmit)} className="max-w-3xl w-full py-8 px-6 space-y-6 text-[#baaa9e] border border-[#baaa9e] rounded-xl shadow-lg text-base">
+            onSubmit={handleSubmit(onSubmit)} className="max-w-3xl w-full py-8 px-6 space-y-6 border text-[#f7f7f7] rounded-2xl shadow-lg text-base">
             <div className="">
                 <label className="block font-semibold mb-1 text-base">Nome completo</label>
                 <input
                     {...register('nome', { required: true })}
-                    className="w-full p-3 rounded bg-white border"
+                    className="w-full p-3 rounded-2xl bg-[#f7f7f7] border border-[#baaa9e] text-[#baaa9e]"
                     placeholder="Seu nome completo"
                 />
                 {errors.nome && <span className="text-red-500 text-sm">Campo obrigatório</span>}
             </div>
 
-            <div className="flex border items-center px-2 py-4 rounded gap-5">
+            <div className="flex border items-center px-2 py-4 rounded-2xl gap-5 border-[#baaa9e] text-[#baaa9e] bg-[#f7f7f7]">
                 <label className="block font-semibold mb-1 text-base">Você irá à cerimônia?</label>
                 <div className="flex gap-6">
-                    <div className='border p-2 rounded'>
+                    <div className='border p-2 rounded-2xl'>
                         <label className="flex items-center gap-2">
                             <input type="radio" value="Sim" {...register('cerimonia', { required: true })} />
                             Sim
                         </label>
                     </div>
-                    <div className='border p-2 rounded'>
+                    <div className='border p-2 rounded-2xl '>
                         <label className="flex items-center gap-2">
                             <input type="radio" value="Nao" {...register('cerimonia', { required: true })} />
                             Não
@@ -64,16 +64,16 @@ export default function GuestConfirmationForm() {
                 {errors.cerimonia && <span className="text-red-500 text-sm">Campo obrigatório</span>}
             </div>
 
-            <div className="flex border items-center px-2 py-4 rounded gap-5">
+            <div className="flex border items-center px-2 py-4 rounded-2xl gap-5 border-[#baaa9e] text-[#baaa9e] bg-[#f7f7f7]">
                 <label className="block font-semibold mb-1 text-base">Você irá à festa?</label>
                 <div className="flex gap-6">
-                    <div className='border p-2 rounded'>
+                    <div className='border p-2 rounded-2xl'>
                         <label className="flex items-center gap-2">
                             <input type="radio" value="Sim" {...register('festa', { required: true })} />
                             Sim
                         </label>
                     </div>
-                    <div className='border p-2 rounded'>
+                    <div className='border p-2 rounded-2xl'>
                         <label className="flex items-center gap-2">
                             <input type="radio" value="Nao" {...register('festa', { required: true })} />
                             Não
@@ -83,10 +83,10 @@ export default function GuestConfirmationForm() {
                 {errors.festa && <span className="text-red-500 text-sm">Campo obrigatório</span>}
             </div>
 
-            <div className="flex flex-col border  px-2 py-4 rounded gap-5">
+            <div className="flex flex-col border  px-2 py-4 rounded-2xl gap-5 border-[#baaa9e] text-[#baaa9e] bg-[#f7f7f7]">
                 <div className='flex items-center gap-4'>
                     <label className="block font-semibold mb-1">Quantidade de adultos (incluindo você)</label>
-                    <select {...register('adultos')} className=" p-3 rounded bg-white border">
+                    <select {...register('adultos')} className=" p-3 rounded-2xl bg-white border">
                         {options.map(n => (
                             <option key={n} value={n}>
                                 {n}
@@ -101,21 +101,21 @@ export default function GuestConfirmationForm() {
                                 key={i}
                                 {...register(`nomesAdultos.${i}` as any)}
                                 placeholder={`Nome do adulto ${i + 2}`}
-                                className="w-full p-3 rounded bg-white border"
+                                className="w-full p-3 rounded-2xl bg-white border"
                             />
                         ))}
                     </div>
                 )}
             </div>
 
-            <div className="flex flex-col border px-2 py-4 rounded gap-5">
+            <div className="flex flex-col border px-2 py-4 rounded-2xl gap-5 border-[#baaa9e] text-[#baaa9e] bg-[#f7f7f7]">
                 <div className="flex items-center gap-4">
                     <label className="block font-semibold mb-1">
                         Quantidade de crianças
                     </label>
                     <select
                         {...register('criancas')}
-                        className="p-3 rounded bg-white border"
+                        className="p-3 rounded-2xl bg-white border"
                     >
                         {options.map(n => (
                             <option key={n} value={n}>
@@ -132,7 +132,7 @@ export default function GuestConfirmationForm() {
                                 key={i}
                                 {...register(`nomesCriancas.${i}` as any)}
                                 placeholder={`Nome da criança ${i + 1}`}
-                                className="w-full p-3 rounded bg-white border"
+                                className="w-full p-3 rounded-2xl bg-white border"
                             />
                         ))}
                     </div>
@@ -144,7 +144,7 @@ export default function GuestConfirmationForm() {
                 <input
                     type="email"
                     {...register('email')}
-                    className="w-full p-3 rounded bg-white border"
+                    className="w-full p-3 rounded-2xl bg-[#f7f7f7] border text-[#baaa9e]"
                     placeholder="exemplo@email.com"
                 />
             </div>
@@ -154,7 +154,7 @@ export default function GuestConfirmationForm() {
                 <input
                     type="tel"
                     {...register('telefone')}
-                    className="w-full p-3 rounded bg-white border"
+                    className="w-full p-3 rounded-2xl bg-[#f7f7f7] border text-[#baaa9e]"
                     placeholder="(xx) xxxxx-xxxx"
                 />
             </div>
@@ -163,7 +163,7 @@ export default function GuestConfirmationForm() {
                 <label className="block font-semibold mb-1">Mensagem para os noivos</label>
                 <textarea
                     {...register('mensagem')}
-                    className="w-full p-3 rounded bg-white border"
+                    className="w-full p-3 rounded-2xl bg-[#f7f7f7] border text-[#baaa9e]"
                     rows={4}
                     placeholder="Deixe seu recado especial..."
                 />
@@ -171,7 +171,7 @@ export default function GuestConfirmationForm() {
 
             <button
                 type="submit"
-                className="mt-4 w-full py-3 rounded-full bg-[#baaa9e] text-white font-bold hover:bg-[#a8968a] transition"
+                className="mt-4 w-full py-4 rounded-2xl bg-[#f7f7f7] text-[#baaa9e] font-bold hover:bg-[#a8968a] transition"
             >
                 Enviar confirmação
             </button>
