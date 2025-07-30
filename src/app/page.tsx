@@ -106,7 +106,7 @@ export default function Home() {
         transition={{ duration: 1, delay: 0.4 }}
         className="text-sm font-light sm:text-base text-center max-w-3xl mb-4"
       >
-        Gostaríamos muito de contar com a presença de todos vocês no momento em que nossa união será abençoada diante de Deus! A cerimônia será rápida e tentaremos ser extremamente pontuais. Contamos com vocês! <span className='text-lg font-semibold'>Dia 31 de março de 2027 às 19h</span>.
+        Gostaríamos muito de contar com a presença de todos vocês no momento em que nossa união será abençoada diante de Deus! A cerimônia será rápida e tentaremos ser extremamente pontuais. Contamos com vocês! <span className='text-lg font-semibold'>Dia 25 de outubro de 2025 às 19h</span>.
 
         <br />
         <br />
