@@ -20,18 +20,18 @@ model GuestConfirmation {
   phone      String?
   isChildren Boolean  @default(false)
   createdAt  DateTime @default(now())
-  Guest      Guest[]
+  guestId    Int
+  guest      Guest    @relation(fields: [guestId], references: [id])
 }
 
 model Guest {
-  id                  Int                @id @default(autoincrement())
-  name                String
-  email               String?
-  phone               String?
-  goToWedding         Boolean            @default(true)
-  goToParty           Boolean            @default(true)
-  observations        String?
-  createdAt           DateTime           @default(now())
-  guestConfirmation   GuestConfirmation? @relation(fields: [guestConfirmationId], references: [id])
-  guestConfirmationId Int?
+  id                Int                 @id @default(autoincrement())
+  name              String
+  email             String?
+  phone             String?
+  goToWedding       Boolean             @default(true)
+  goToParty         Boolean             @default(true)
+  observations      String?
+  createdAt         DateTime            @default(now())
+  GuestConfirmation GuestConfirmation[]
 }

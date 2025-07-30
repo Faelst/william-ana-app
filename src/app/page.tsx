@@ -30,7 +30,7 @@ export default function Home() {
           transition={{ duration: 3, delay: 0.1 }}
           className={`text-6xl sm:text-9xl leading-[1.2] mb-4 ${corinthia.className} font-bold`}
         >
-          William & Ana
+          Ana & William
         </motion.h1>
 
         <motion.p
@@ -117,7 +117,7 @@ export default function Home() {
         Esperamos que todos possam comparecer e celebrar conosco este momento tão especial!
       </motion.p>
 
-      <div className='flex gap-5'>
+      <div className='flex gap-5 md:flex-row flex-col items-center justify-center'>
         <div className='text-center items-center justify-center flex flex-col gap-2'>
           <a
             href="https://www.google.com/maps?q=Paróquia+São+Francisco+de+Assis,+R.+Luís+de+Moura,+129+-+Cidade+Nova+Jacareí,+Jacareí+-+SP,+12325-180"
@@ -125,12 +125,12 @@ export default function Home() {
             rel="noopener noreferrer"
             className="block cursor-pointer hover:underline"
           >
+
             <p className='text-2xl font-semibold'>Cerimônia Religiosa</p>
             <p className='text-xl'>Paroquia São Francisco de Assis</p>
-            <p className='text-lg w-lg'>R. Luís de Moura, 129 - Cidade Nova Jacareí, Jacareí - SP, 12325-180</p>
+            <p className='text-lg'>R. Luís de Moura, 129 - Cidade Nova Jacareí, Jacareí - SP, 12325-180</p>
           </a>
-          <iframe className='rounded-2xl' width="600" height="400" src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=R.%20Lu%C3%ADs%20de%20Moura,%20129%20-%20Cidade%20Nova%20Jacare%C3%AD,%20Jacare%C3%AD%20-%20SP,%2012325-180+(Par%C3%B3quia%20S%C3%A3o%20Francisco%20de%20Assis)&amp;t=&amp;z=16&amp;ie=UTF8&amp;iwloc=B&amp;output=embed">
-            <a href="https://www.mapsdirections.info/fr/calculer-la-population-sur-une-carte">mesurer la population sur une carte</a>
+          <iframe className='rounded-2xl' width="350" height="400" src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=R.%20Lu%C3%ADs%20de%20Moura,%20129%20-%20Cidade%20Nova%20Jacare%C3%AD,%20Jacare%C3%AD%20-%20SP,%2012325-180+(Par%C3%B3quia%20S%C3%A3o%20Francisco%20de%20Assis)&amp;t=&amp;z=16&amp;ie=UTF8&amp;iwloc=B&amp;output=embed">
           </iframe>
         </div>
         <div className='text-center items-center justify-center flex flex-col gap-2'>
@@ -142,10 +142,9 @@ export default function Home() {
           >
             <p className='text-2xl font-semibold'>Sitio das Palmeiras</p>
             <p className='text-xl'>Festa e Recepção</p>
-            <p className='text-lg w-lg'>Estr. São Sebastião, 2235 - Macrozona Destinação Industrial (Carv. Pinto - São Silvestre), Jacareí - SP, 12340-530</p>
+            <p className='text-lg'>Estr. São Sebastião, 2235 - Macrozona Destinação Industrial (Carv. Pinto - São Silvestre), Jacareí - SP, 12340-530</p>
           </a>
-          <iframe className='rounded-2xl' width="600" height="400" src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=Estr.%20S%C3%A3o%20Sebasti%C3%A3o,%202235%20-%20Macrozona%20Destina%C3%A7%C3%A3o%20Industrial%20(Carv.%20Pinto%20-%20S%C3%A3o%20Silvestre),%20Jacare%C3%AD%20-%20SP,%2012340-530+(Sitio%20das%20Palmeiras)&amp;t=&amp;z=16&amp;ie=UTF8&amp;iwloc=B&amp;output=embed">
-            <a href="https://www.mapsdirections.info/fr/calculer-la-population-sur-une-carte">Calculateur de carte de population</a>
+          <iframe className='rounded-2xl' width="350" height="400" src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=Estr.%20S%C3%A3o%20Sebasti%C3%A3o,%202235%20-%20Macrozona%20Destina%C3%A7%C3%A3o%20Industrial%20(Carv.%20Pinto%20-%20S%C3%A3o%20Silvestre),%20Jacare%C3%AD%20-%20SP,%2012340-530+(Sitio%20das%20Palmeiras)&amp;t=&amp;z=16&amp;ie=UTF8&amp;iwloc=B&amp;output=embed">
           </iframe>
         </div>
       </div>

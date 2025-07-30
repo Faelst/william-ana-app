@@ -3,15 +3,16 @@
 
 import { useForm } from 'react-hook-form';
 
+
 type FormValues = {
-    nome: string;
-    cerimonia: 'Sim' | 'Nao';
-    festa: 'Sim' | 'Nao';
-    adultos: number;
-    criancas: number;
+    name: string;
+    goToWedding: 'Sim' | 'Nao';
+    goToParty: 'Sim' | 'Nao';
+    adults: number;
+    children: number;
     email: string;
-    telefone: string;
-    mensagem: string;
+    phone: string;
+    observations: string;
 };
 
 export default function GuestConfirmationForm() {
@@ -19,18 +20,58 @@ export default function GuestConfirmationForm() {
         register,
         handleSubmit,
         watch,
+        setValue,
         formState: { errors },
     } = useForm<FormValues>();
 
-    const onSubmit = (data: FormValues) => {
-        console.log('Dados enviados:', data);
-        // Aqui você pode chamar sua API ou mostrar um feedback
+    const phone = watch('phone');
+
+    const handlePhoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        let value = event.target.value.replace(/\D/g, '');
+
+        if (value.length > 11) {
+            value = value.slice(0, 11);
+        }
+
+        if (value.length <= 10) {
+            value = value.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+        } else {
+            value = value.replace(/(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
+        }
+
+        setValue('phone', value);
     };
+
+    const onSubmit = async (data: FormValues) => {
+        console.log('Dados enviados:', data);
+
+        try {
+            const response = await fetch('/api/register-guest', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (!response.ok) {
+                throw new Error('Erro ao enviar os dados');
+            }
+
+            const result = await response.json();
+
+            console.log('Resposta do servidor:', result);
+            alert('Dados enviados com sucesso!');
+        } catch (error) {
+            console.error('Erro ao enviar os dados:', error);
+            alert('Ocorreu um erro ao enviar os dados. Por favor, tente novamente mais tarde.');
+        }
+    }
 
     const options = Array.from({ length: 11 }, (_, i) => i); // 0 a 10
 
-    const adultos = Number(watch('adultos') || 0);
-    const criancas = Number(watch('criancas') || 0);
+    const adults = Number(watch('adults') || 0);
+    const children = Number(watch('children') || 0);
 
     return (
         <form
@@ -38,11 +79,11 @@ export default function GuestConfirmationForm() {
             <div className="">
                 <label className="block font-semibold mb-1 text-base">Nome completo</label>
                 <input
-                    {...register('nome', { required: true })}
+                    {...register('name', { required: true })}
                     className="w-full p-3 rounded-2xl bg-[#f7f7f7] border border-[#baaa9e] text-[#baaa9e]"
                     placeholder="Seu nome completo"
                 />
-                {errors.nome && <span className="text-red-500 text-sm">Campo obrigatório</span>}
+                {errors.name && <span className="text-red-500 text-sm">Campo obrigatório</span>}
             </div>
 
             <div className="flex border items-center px-2 py-4 rounded-2xl gap-5 border-[#baaa9e] text-[#baaa9e] bg-[#f7f7f7]">
@@ -50,18 +91,18 @@ export default function GuestConfirmationForm() {
                 <div className="flex gap-6">
                     <div className='border p-2 rounded-2xl'>
                         <label className="flex items-center gap-2">
-                            <input type="radio" value="Sim" {...register('cerimonia', { required: true })} />
+                            <input type="radio" value="Sim" {...register('goToWedding', { required: true })} />
                             Sim
                         </label>
                     </div>
                     <div className='border p-2 rounded-2xl '>
                         <label className="flex items-center gap-2">
-                            <input type="radio" value="Nao" {...register('cerimonia', { required: true })} />
+                            <input type="radio" value="Nao" {...register('goToWedding', { required: true })} />
                             Não
                         </label>
                     </div>
                 </div>
-                {errors.cerimonia && <span className="text-red-500 text-sm">Campo obrigatório</span>}
+                {errors.goToWedding && <span className="text-red-500 text-sm">Campo obrigatório</span>}
             </div>
 
             <div className="flex border items-center px-2 py-4 rounded-2xl gap-5 border-[#baaa9e] text-[#baaa9e] bg-[#f7f7f7]">
@@ -69,24 +110,24 @@ export default function GuestConfirmationForm() {
                 <div className="flex gap-6">
                     <div className='border p-2 rounded-2xl'>
                         <label className="flex items-center gap-2">
-                            <input type="radio" value="Sim" {...register('festa', { required: true })} />
+                            <input type="radio" value="Sim" {...register('goToParty', { required: true })} />
                             Sim
                         </label>
                     </div>
                     <div className='border p-2 rounded-2xl'>
                         <label className="flex items-center gap-2">
-                            <input type="radio" value="Nao" {...register('festa', { required: true })} />
+                            <input type="radio" value="Nao" {...register('goToParty', { required: true })} />
                             Não
                         </label>
                     </div>
                 </div>
-                {errors.festa && <span className="text-red-500 text-sm">Campo obrigatório</span>}
+                {errors.goToParty && <span className="text-red-500 text-sm">Campo obrigatório</span>}
             </div>
 
             <div className="flex flex-col border  px-2 py-4 rounded-2xl gap-5 border-[#baaa9e] text-[#baaa9e] bg-[#f7f7f7]">
                 <div className='flex items-center gap-4'>
                     <label className="block font-semibold mb-1">Quantidade de adultos (incluindo você)</label>
-                    <select {...register('adultos')} className=" p-3 rounded-2xl bg-white border">
+                    <select {...register('adults')} className=" p-3 rounded-2xl bg-white border">
                         {options.map(n => (
                             <option key={n} value={n}>
                                 {n}
@@ -94,12 +135,12 @@ export default function GuestConfirmationForm() {
                         ))}
                     </select>
                 </div>
-                {adultos > 1 && (
+                {adults > 1 && (
                     <div className="space-y-1">
-                        {[...Array(adultos - 1)].map((_, i) => (
+                        {[...Array(adults - 1)].map((_, i) => (
                             <input
                                 key={i}
-                                {...register(`nomesAdultos.${i}` as any)}
+                                {...register(`adultNameEscorts.${i}` as any)}
                                 placeholder={`Nome do adulto ${i + 2}`}
                                 className="w-full p-3 rounded-2xl bg-white border"
                             />
@@ -114,7 +155,7 @@ export default function GuestConfirmationForm() {
                         Quantidade de crianças
                     </label>
                     <select
-                        {...register('criancas')}
+                        {...register('children', { valueAsNumber: true })}
                         className="p-3 rounded-2xl bg-white border"
                     >
                         {options.map(n => (
@@ -125,12 +166,12 @@ export default function GuestConfirmationForm() {
                     </select>
                 </div>
 
-                {criancas > 0 && (
+                {children > 0 && (
                     <div className="space-y-1">
-                        {[...Array(criancas)].map((_, i) => (
+                        {[...Array(children)].map((_, i) => (
                             <input
                                 key={i}
-                                {...register(`nomesCriancas.${i}` as any)}
+                                {...register(`childNameEscorts.${i}` as any)}
                                 placeholder={`Nome da criança ${i + 1}`}
                                 className="w-full p-3 rounded-2xl bg-white border"
                             />
@@ -150,19 +191,22 @@ export default function GuestConfirmationForm() {
             </div>
 
             <div>
-                <label className="block font-semibold mb-1">Telefone para envio do convite</label>
+                <label className="block font-semibold mb-1">Telefone para envio do convite (WhatsApp)</label>
                 <input
                     type="tel"
-                    {...register('telefone')}
-                    className="w-full p-3 rounded-2xl bg-[#f7f7f7] border text-[#baaa9e]"
+                    {...register('phone', { required: true })}
+                    value={phone || ''}
+                    onChange={handlePhoneChange}
                     placeholder="(xx) xxxxx-xxxx"
+                    className="w-full p-3 rounded-2xl bg-[#f7f7f7] border text-[#baaa9e]"
                 />
+                {errors.phone && <span className="text-red-500 text-sm">Campo obrigatório</span>}
             </div>
 
             <div>
                 <label className="block font-semibold mb-1">Mensagem para os noivos</label>
                 <textarea
-                    {...register('mensagem')}
+                    {...register('observations')}
                     className="w-full p-3 rounded-2xl bg-[#f7f7f7] border text-[#baaa9e]"
                     rows={4}
                     placeholder="Deixe seu recado especial..."
