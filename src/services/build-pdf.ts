@@ -28,23 +28,6 @@ async function ensureFontBytesLoaded() {
   }
 }
 
-function wrapText(text: string, font: PDFFont, size: number, maxWidth: number) {
-  const words = text.split(/\s+/);
-  const lines: string[] = [];
-  let line = '';
-  for (const w of words) {
-    const test = line ? `${line} ${w}` : w;
-    const width = font.widthOfTextAtSize(test, size);
-    if (width <= maxWidth) line = test;
-    else {
-      if (line) lines.push(line);
-      line = w;
-    }
-  }
-  if (line) lines.push(line);
-  return lines;
-}
-
 function drawCenteredTracked(opts: {
   page: any;
   text: string;

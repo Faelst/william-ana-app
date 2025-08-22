@@ -61,9 +61,10 @@ export default function GuestConfirmationForm() {
                 throw new Error('Erro ao enviar os dados');
             }
 
-            const result = await response.json();
+            await response.json();
             setShowSuccess(true);
         } catch (error) {
+            console.log(error)
             alert('Ocorreu um erro ao enviar os dados. Por favor, tente novamente mais tarde.');
         }
     }

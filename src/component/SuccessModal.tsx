@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { Questrial } from 'next/font/google';
-import { corinthia } from '../app/page';
+import { corinthia } from '../app/fonts';
 
 const questrial = Questrial({ subsets: ['latin'], weight: '400' });
 
