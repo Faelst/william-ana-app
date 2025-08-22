@@ -22,6 +22,7 @@ model GuestConfirmation {
   createdAt  DateTime @default(now())
   guestId    Int
   guest      Guest    @relation(fields: [guestId], references: [id])
+  inviteSent Boolean  @default(false)
 }
 
 model Guest {
@@ -33,5 +34,6 @@ model Guest {
   goToParty         Boolean             @default(true)
   observations      String?
   createdAt         DateTime            @default(now())
+  inviteSent        Boolean             @default(false)
   GuestConfirmation GuestConfirmation[]
 }

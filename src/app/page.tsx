@@ -5,8 +5,8 @@ import { Corinthia, Questrial } from 'next/font/google';
 import Countdown from '../component/Countdown';
 import GuestConfirmationForm from '../component/FormularioConfirmacao';
 
-const corinthia = Corinthia({ subsets: ['latin'], weight: '400' });
-const questrial = Questrial({ subsets: ['latin'], weight: '400' });
+export const corinthia = Corinthia({ subsets: ['latin'], weight: '400' });
+export const questrial = Questrial({ subsets: ['latin'], weight: '400' });
 
 export default function Home() {
 
@@ -19,7 +19,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          className="uppercase text-xl tracking-[0.2em]"
+          className="uppercase text-xl tracking-[0.5em]"
         >
           Save the date
         </motion.p>

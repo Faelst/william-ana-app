@@ -1,9 +1,12 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import { Client } from '@upstash/qstash';
 
 const prisma = new PrismaClient({
   datasourceUrl: process.env.TURSO_DATABASE_URL,
 });
+
+const qstash = new Client({ token: process.env.QSTASH_TOKEN! });
 
 export async function POST(request: Request) {
   const body = await request.json();
@@ -26,36 +29,45 @@ export async function POST(request: Request) {
     });
 
     if (adultNameEscorts) {
-      await Promise.all(adultNameEscorts.map(async (name: string) => {
-        await prisma.guestConfirmation.create({
-          data: {
-            name,
-            guest: {
-              connect: {
-                id: guest.id,
+      await Promise.all(
+        adultNameEscorts.map(async (name: string) => {
+          await prisma.guestConfirmation.create({
+            data: {
+              name,
+              guest: {
+                connect: {
+                  id: guest.id,
+                },
               },
+              isChildren: false,
             },
-            isChildren: false,
-          },
-        });
-      }));
+          });
+        }),
+      );
     }
 
     if (childNameEscorts) {
-      await Promise.all(childNameEscorts.map(async (name: string) => {
-        await prisma.guestConfirmation.create({
-          data: {
-            name,
-            guest: {
-              connect: {
-                id: guest.id,
+      await Promise.all(
+        childNameEscorts.map(async (name: string) => {
+          await prisma.guestConfirmation.create({
+            data: {
+              name,
+              guest: {
+                connect: {
+                  id: guest.id,
+                },
               },
+              isChildren: true,
             },
-            isChildren: true,
-          },
-        });
-      }));
+          });
+        }),
+      );
     }
+
+    await qstash.publishJSON({
+      url: `${process.env.BASE_URL}/api/jobs/send-invites`,
+      body: { id: guest.id, name, email, phone, adultNameEscorts, childNameEscorts },
+    });
 
     return NextResponse.json(body, { status: 201 });
   } catch (error) {
