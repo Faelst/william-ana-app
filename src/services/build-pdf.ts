@@ -7,7 +7,6 @@ import { PDFDocument, rgb } from 'pdf-lib';
 import type { PDFFont } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit';
 import QRCode from 'qrcode';
-import { generatePdfFile } from './generate-pdf-file';
 
 type Payload = {
   name: string;
@@ -26,6 +25,15 @@ async function ensureFontBytesLoaded() {
     CORINTHIA_BYTES = c;
     QUESTRIAL_BYTES = q;
   }
+}
+
+function sanitizeForFilename(input: string) {
+  return String(input)
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/gi, '_')
+    .replace(/^_+|_+$/g, '')
+    .slice(0, 60);
 }
 
 function drawCenteredTracked(opts: {
@@ -56,7 +64,8 @@ function drawCenteredTracked(opts: {
 
 export async function buildPdf({ name, code, number }: Payload): Promise<{
   bytes: Uint8Array;
-  filePath: string;
+  base64: string;
+  dataUrl: string;
   filename: string;
 }> {
   try {
@@ -69,11 +78,12 @@ export async function buildPdf({ name, code, number }: Payload): Promise<{
     const pdf = await PDFDocument.create();
     pdf.registerFontkit(fontkit);
 
-    const page = pdf.addPage([841.89, 450]);
+    const page = pdf.addPage([841.89, 450]); // landscape
     const { width, height } = page.getSize();
 
     const corinthia = await pdf.embedFont(CORINTHIA_BYTES!);
     const questrial = await pdf.embedFont(QUESTRIAL_BYTES!);
+
     const primary = rgb(0.729, 0.667, 0.62);
     const textColor = rgb(0.42, 0.36, 0.32);
     const subtle = rgb(0.55, 0.5, 0.47);
@@ -111,38 +121,18 @@ export async function buildPdf({ name, code, number }: Payload): Promise<{
     let cursorY = height - 170;
     const headerSize = 14;
 
+    // label + nome destacado
     const label = 'Convidado(a): ';
     const labelSize = headerSize;
     const nameSize = headerSize + 4;
-
     const labelWidth = questrial.widthOfTextAtSize(label, labelSize);
 
-    page.drawText(label, {
-      x: leftX,
-      y: cursorY,
-      size: labelSize,
-      font: questrial,
-      color: textColor,
-    });
+    page.drawText(label, { x: leftX, y: cursorY, size: labelSize, font: questrial, color: textColor });
 
     const nameX = leftX + labelWidth + 6;
     const nameWidth = questrial.widthOfTextAtSize(name, nameSize);
-
-    page.drawRectangle({
-      x: nameX,
-      y: cursorY - 3,
-      width: nameWidth,
-      height: 1.6,
-      color: primary,
-    });
-
-    page.drawText(name, {
-      x: nameX,
-      y: cursorY,
-      size: nameSize,
-      font: questrial,
-      color: primary,
-    });
+    page.drawRectangle({ x: nameX, y: cursorY - 3, width: nameWidth, height: 1.6, color: primary });
+    page.drawText(name, { x: nameX, y: cursorY, size: nameSize, font: questrial, color: primary });
 
     cursorY -= 20;
     page.drawText(`Data e horário: 25 de outubro de 2025 às 19h`, {
@@ -197,8 +187,8 @@ export async function buildPdf({ name, code, number }: Payload): Promise<{
     });
 
     const payload = { code, number, ownerName: name };
-    const dataUrl = await QRCode.toDataURL(JSON.stringify(payload), { margin: 1, scale: 8 });
-    const pngBase64 = dataUrl.split(',')[1];
+    const dataUrlQr = await QRCode.toDataURL(JSON.stringify(payload), { margin: 1, scale: 8 });
+    const pngBase64 = dataUrlQr.split(',')[1];
     const qrPng = await pdf.embedPng(Buffer.from(pngBase64, 'base64'));
 
     const qrSize = 200;
@@ -206,20 +196,8 @@ export async function buildPdf({ name, code, number }: Payload): Promise<{
     const qrY = height - qrSize - 150;
     page.drawImage(qrPng, { x: qrX, y: qrY, width: qrSize, height: qrSize });
 
-    page.drawText(`Código: ${code}`, {
-      x: qrX,
-      y: qrY - 22,
-      size: 8,
-      font: questrial,
-      color: textColor,
-    });
-    page.drawText(`Proprietário: ${name}`, {
-      x: qrX,
-      y: qrY - 38,
-      size: 8,
-      font: questrial,
-      color: textColor,
-    });
+    page.drawText(`Código: ${code}`, { x: qrX, y: qrY - 22, size: 8, font: questrial, color: textColor });
+    page.drawText(`Proprietário: ${name}`, { x: qrX, y: qrY - 38, size: 8, font: questrial, color: textColor });
 
     page.drawText('Apresente este QR Code na recepção do evento.', {
       x: 50,
@@ -229,10 +207,12 @@ export async function buildPdf({ name, code, number }: Payload): Promise<{
       color: subtle,
     });
 
-    const pdfBytes = await pdf.save();
-    const { bytes, filePath, filename } = await generatePdfFile(pdfBytes, name);
+    const bytes = await pdf.save();
+    const base64 = Buffer.from(bytes).toString('base64');
+    const dataUrl = `data:application/pdf;base64,${base64}`;
+    const filename = `convite_${sanitizeForFilename(name)}.pdf`;
 
-    return { bytes, filePath, filename };
+    return { bytes, base64, dataUrl, filename };
   } catch (err) {
     console.error(err);
     throw err;

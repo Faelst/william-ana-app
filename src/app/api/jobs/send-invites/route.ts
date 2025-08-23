@@ -11,7 +11,7 @@ const prisma = new PrismaClient({
   datasourceUrl: process.env.TURSO_DATABASE_URL,
 });
 
-export const POST = verifySignatureAppRouter(async (req: Request) => {
+export const POST = async (req: Request) => {
   const evolutionSendMediaPath = `/message/sendMedia/${process.env.EVOLUTION_INTERFACE}`;
   const evolutionApi = axios.create({
     baseURL: process.env.EVOLUTION_BASE_URL,
@@ -33,13 +33,13 @@ export const POST = verifySignatureAppRouter(async (req: Request) => {
   const childNames = data?.childNameEscorts?.map((name) => name) ?? [];
 
   for (const name of [...adultNames, ...childNames]) {
-    const { filename } = await buildPdf({ name, code: randomUUID(), number: data.phone });
+    const { filename, base64 } = await buildPdf({ name, code: randomUUID(), number: data.phone });
 
     await evolutionApi.post(evolutionSendMediaPath, {
       number: toBRCompactPhone(data.phone),
       mediatype: 'document',
-      media: `${process.env.NEXT_PUBLIC_INVITES_URL_PATH}/${filename}`,
-      fileName: filename,
+      media: base64,
+      fileName: filename.toLowerCase(),
     });
   }
 
@@ -52,7 +52,7 @@ export const POST = verifySignatureAppRouter(async (req: Request) => {
     },
   });
 
-  const { filename } = await buildPdf({ name: data.name, code: randomUUID(), number: data.phone });
+  const { filename, base64 } = await buildPdf({ name: data.name, code: randomUUID(), number: data.phone });
   const caption = buildConfirmationMessage({
     salutationName: data.name.split(' ')[0],
     names: [data.name, ...adultNames, ...childNames],
@@ -61,9 +61,9 @@ export const POST = verifySignatureAppRouter(async (req: Request) => {
   await evolutionApi.post(evolutionSendMediaPath, {
     number: toBRCompactPhone(data.phone),
     mediatype: 'document',
-    media: `${process.env.NEXT_PUBLIC_INVITES_URL_PATH}/${filename}`,
+    media: base64,
     caption,
-    fileName: filename,
+    fileName: filename.toLowerCase(),
   });
 
   await prisma.guest.updateMany({
@@ -76,4 +76,4 @@ export const POST = verifySignatureAppRouter(async (req: Request) => {
   });
 
   return NextResponse.json({ ok: true });
-});
+};
