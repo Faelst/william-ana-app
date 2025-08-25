@@ -37,3 +37,10 @@ model Guest {
   inviteSent        Boolean             @default(false)
   GuestConfirmation GuestConfirmation[]
 }
+
+model InviteCode {
+  id        Int      @id @default(autoincrement())
+  code      String   @unique
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}

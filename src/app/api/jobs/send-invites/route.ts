@@ -33,7 +33,15 @@ export const POST = async (req: Request) => {
   const childNames = data?.childNameEscorts?.map((name) => name) ?? [];
 
   for (const name of [...adultNames, ...childNames]) {
-    const { filename, base64 } = await buildPdf({ name, code: randomUUID(), number: data.phone });
+    const code = randomUUID();
+    const { filename, base64 } = await buildPdf({ name, code, number: data.phone });
+
+    await prisma.inviteCode.create({
+      data: {
+        code,
+        used: false,
+      },
+    });
 
     await evolutionApi.post(evolutionSendMediaPath, {
       number: toBRCompactPhone(data.phone),
@@ -52,10 +60,18 @@ export const POST = async (req: Request) => {
     },
   });
 
-  const { filename, base64 } = await buildPdf({ name: data.name, code: randomUUID(), number: data.phone });
+  const code = randomUUID();
+  const { filename, base64 } = await buildPdf({ name: data.name, code, number: data.phone });
   const caption = buildConfirmationMessage({
     salutationName: data.name.split(' ')[0],
     names: [data.name, ...adultNames, ...childNames],
+  });
+
+  await prisma.inviteCode.create({
+    data: {
+      code,
+      used: false,
+    },
   });
 
   await evolutionApi.post(evolutionSendMediaPath, {
