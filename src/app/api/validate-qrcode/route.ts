@@ -21,6 +21,10 @@ export const POST = async (req: Request) => {
     return new Response('Invalid code', { status: 404 });
   }
 
+  if (isValid.used) {
+    return new Response('Code has already been used', { status: 404 });
+  }
+
   await prisma.inviteCode.update({
     where: { code },
     data: { used: true },

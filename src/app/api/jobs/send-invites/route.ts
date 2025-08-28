@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { verifySignatureAppRouter } from '@upstash/qstash/nextjs';
 import { buildPdf } from '@/services/build-pdf';
 import { randomUUID } from 'crypto';
 import axios from 'axios';
