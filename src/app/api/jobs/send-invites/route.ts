@@ -39,6 +39,7 @@ export const POST = async (req: Request) => {
     await prisma.inviteCode.create({
       data: {
         code,
+        name,
         used: false,
       },
     });
@@ -70,6 +71,7 @@ export const POST = async (req: Request) => {
   await prisma.inviteCode.create({
     data: {
       code,
+      name: data.name,
       used: false,
     },
   });

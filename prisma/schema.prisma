@@ -41,6 +41,7 @@ model Guest {
 model InviteCode {
   id        Int      @id @default(autoincrement())
   code      String   @unique
+  name      String
   used      Boolean  @default(false)
   createdAt DateTime @default(now())
 }
