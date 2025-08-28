@@ -109,7 +109,7 @@ export default function Home() {
           <br />
           <br />
           Após a cerimônia, teremos uma festa para celebrar com todos os nossos amigos e familiares.
-          A festa será realizada no mesmo local da cerimônia, <span className='text-lg font-semibold'>começando às 20h30</span>.
+          A festa será realizada no Sítio das Palmeiras, <span className='text-lg font-semibold'>começando às 20h30</span>.
           <br />
           <br />
           Esperamos que todos possam comparecer e celebrar conosco este momento tão especial!
