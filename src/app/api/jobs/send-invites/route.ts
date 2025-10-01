@@ -32,7 +32,16 @@ export const POST = async (req: Request) => {
   const childNames = data?.childNameEscorts?.map((name) => name) ?? [];
 
   for (const name of [...adultNames, ...childNames]) {
+    const invitedSended = await prisma.inviteCode.findFirst({
+      where: {
+        name,
+      },
+    });
+
+    if (invitedSended) continue;
+
     const code = randomUUID();
+
     const { filename, base64 } = await buildPdf({ name, code, number: data.phone });
 
     await prisma.inviteCode.create({
@@ -49,6 +58,8 @@ export const POST = async (req: Request) => {
       media: base64,
       fileName: filename.toLowerCase(),
     });
+
+    await new Promise((resolve) => setTimeout(resolve, 1_000));
   }
 
   await prisma.guestConfirmation.updateMany({
